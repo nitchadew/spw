@@ -20,7 +20,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private Timer timer;
 	
 	private long score = 10000;
-	private double difficulty = 0.1;
+	private double difficulty = 0.1;			// bullet fequency
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
@@ -44,7 +44,10 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void generateEnemy(){
-		Enemy e = new Enemy((int)(Math.random()*390), 30);
+		//if(Math.random() > difficulty)
+			Enemy e = new Enemy((int)(Math.random()*390), 30, (int)(Math.random()*100),10); //random size
+		//else
+			//Enemy e = new Enemy((int)(Math.random()*390), 30, 10,(int)(Math.random()*80)); 
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
@@ -62,7 +65,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 77;
+				score += 77; 		// add socre 
 			}
 		}
 		
