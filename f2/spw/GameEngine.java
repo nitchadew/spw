@@ -44,17 +44,27 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void generateEnemy(){
-		//if(Math.random() > difficulty)
-			Enemy e = new Enemy((int)(Math.random()*390), 30, (int)(Math.random()*100),10); //random size
-		//else
-			//Enemy e = new Enemy((int)(Math.random()*390), 30, 10,(int)(Math.random()*80)); 
+		Enemy e = new Enemy((int)(Math.random()*390), 30, (int)(Math.random()*100),10); //random size w
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
+
+
+	private void generateEnemytwo(){
+		Enemy e = new Enemy((int)(Math.random()*390), 30, 10,(int)(Math.random()*200)); //random size h
+		gp.sprites.add(e);
+		enemies.add(e);
+
+	}
+
+
+
 	
 	private void process(){
 		if(Math.random() < difficulty){
-			generateEnemy();
+			generateEnemy();				//call random
+			generateEnemytwo();
+
 		}
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
