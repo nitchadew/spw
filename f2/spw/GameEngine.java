@@ -18,7 +18,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private SpaceShip v;	
 	
 	private Timer timer;
-	
+	private int damagetime;
 	private long score = 10000;
 	private double difficulty = 0.1;			// bullet fequency
 	
@@ -61,6 +61,7 @@ public class GameEngine implements KeyListener, GameReporter{
 
 	
 	private void process(){
+		
 		if(Math.random() < difficulty){
 			generateEnemy();				//call random
 			generateEnemytwo();
@@ -75,7 +76,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 77; 		// add socre 
+				score += 1; 		// add socre 
 			}
 		}
 		
@@ -86,8 +87,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
-				return;
+				damagetime = damagetime+1;
+				if(damagetime == 50){	//number of damage
+					die();
+					return;
+				}
 			}
 		}
 	}
