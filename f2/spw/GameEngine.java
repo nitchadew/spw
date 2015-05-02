@@ -19,7 +19,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private Timer timer;
 	private int damagetime;
-	private long score = 10000;
+	private long score = 0;
 	private double difficulty = 0.1;			// bullet fequency
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -42,8 +42,13 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void start(){
 		timer.start();
 	}
+
+
 	
-	private void generateEnemy(){
+
+
+
+	/*private void generateEnemy(){
 		Enemy e = new Enemy((int)(Math.random()*390), 30, (int)(Math.random()*100),10); //random size w
 		gp.sprites.add(e);
 		enemies.add(e);
@@ -55,8 +60,27 @@ public class GameEngine implements KeyListener, GameReporter{
 		gp.sprites.add(e);
 		enemies.add(e);
 
+	}*/
+
+	
+	private void generateEnemy(){
+		Enemy e = new Enemy(80, 10, 10, 10); 
+		gp.sprites.add(e);
+		enemies.add(e);
 	}
 
+	private void generateEnemytwo(){
+		Enemy e = new Enemy(280, 10, 10, 10); 
+		gp.sprites.add(e);
+		enemies.add(e);
+	}
+
+	private void generateEnemythree(){
+		Enemy e = new Enemy(180, 10, 10, 10); 
+		gp.sprites.add(e);
+		enemies.add(e);
+	}
+	
 
 
 	private void lift(){
@@ -80,11 +104,15 @@ public class GameEngine implements KeyListener, GameReporter{
 	private void process(){
 		rigth();						//call
 		lift();
-		if(Math.random() < difficulty){
+		if(Math.random() < 0.02)
 			generateEnemy();				//call random
+	
+		if(Math.random() < 0.05)
 			generateEnemytwo();
-			
-		}
+
+		if(Math.random() < 0.1)
+			generateEnemythree();
+		
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
@@ -106,7 +134,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			er = e.getRectangle();
 			if(er.intersects(vr)){
 				damagetime = damagetime+1;
-				if(damagetime == 50){	//number of damage
+				if(damagetime == 3){	//number of damage
 					die();
 					return;
 				}
@@ -157,4 +185,5 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void keyTyped(KeyEvent e) {
 		//do nothing		
 	}
+	
 }
