@@ -19,7 +19,7 @@ public abstract class Sprite {
 
 	abstract public void draw(Graphics2D g);
 	
-	public Double getRectangle() {
+	public Double getRectangle() {                               //return position
 		return new Rectangle2D.Double(x, y, width, height);
 	}
 }

@@ -18,7 +18,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private SpaceShip v;	
 	
 	private Timer timer;
-	private int damagetime;
+	private long damagetime = 50;
 	private long score = 0;
 	private double difficulty = 0.1;			// bullet fequency
 	
@@ -45,7 +45,6 @@ public class GameEngine implements KeyListener, GameReporter{
 
 
 	
-
 
 
 	/*private void generateEnemy(){
@@ -80,18 +79,24 @@ public class GameEngine implements KeyListener, GameReporter{
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
+
+	private void generateEnemybig(){
+		Enemy e = new Enemy(180, 10, 10, 250); 
+		gp.sprites.add(e);
+		enemies.add(e);
+	}
 	
 
 
 	private void lift(){
-		Enemy e = new Enemy(0, 10, 40 ,200); //lift way
+		Enemy e = new Enemy(-120, 10, 160 ,30); //lift way
 		gp.sprites.add(e);
 		enemies.add(e);
 
 	}
 
 	private void rigth(){
-		Enemy e = new Enemy(345, 10, 40 ,200); //rigth way
+		Enemy e = new Enemy(345, 10, 480,30); //rigth way
 		gp.sprites.add(e);
 		enemies.add(e);
 
@@ -104,14 +109,16 @@ public class GameEngine implements KeyListener, GameReporter{
 	private void process(){
 		rigth();						//call
 		lift();
-		if(Math.random() < 0.02)
+		if(Math.random() < 0.04){
+			if(Math.random() < 0.3)
+				generateEnemybig();	
 			generateEnemy();				//call random
+		}
 	
-		if(Math.random() < 0.05)
-			generateEnemytwo();
-
-		if(Math.random() < 0.1)
+		if(Math.random() < 0.04)
 			generateEnemythree();
+		else if(Math.random() < 0.04)
+			generateEnemytwo();
 		
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
@@ -133,8 +140,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				damagetime = damagetime+1;
-				if(damagetime == 3){	//number of damage
+				damagetime = damagetime-1;
+				if(damagetime == 0){	//number of damage
 					die();
 					return;
 				}
@@ -169,7 +176,14 @@ public class GameEngine implements KeyListener, GameReporter{
 	public long getScore(){
 		return score;
 	}
-	
+
+
+	public long getdamagetime(){
+		return damagetime;
+	}
+
+
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);
