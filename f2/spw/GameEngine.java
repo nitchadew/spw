@@ -14,7 +14,10 @@ import javax.swing.Timer;
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private ArrayList<Bonus> bonusscore = new ArrayList<Bonus>();
+	private ArrayList<Heal> healit = new ArrayList<Heal>();
+		
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -44,41 +47,14 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 
 
-	
-
-
-	/*private void generateEnemy(){
-		Enemy e = new Enemy((int)(Math.random()*390), 30, (int)(Math.random()*100),10); //random size w
-		gp.sprites.add(e);
-		enemies.add(e);
-	}
-
-
-	private void generateEnemytwo(){
-		Enemy e = new Enemy((int)(Math.random()*390), 30, 10,(int)(Math.random()*200)); //random size h
-		gp.sprites.add(e);
-		enemies.add(e);
-
-	}*/
 
 	
-	private void generateEnemy(){
-		Enemy e = new Enemy(80, 10, 10, 10); 
+	private void generateEnemy(int Y){
+		Enemy e = new Enemy(Y, 10, 10, 10); 
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
 
-	private void generateEnemytwo(){
-		Enemy e = new Enemy(280, 10, 10, 10); 
-		gp.sprites.add(e);
-		enemies.add(e);
-	}
-
-	private void generateEnemythree(){
-		Enemy e = new Enemy(180, 10, 10, 10); 
-		gp.sprites.add(e);
-		enemies.add(e);
-	}
 
 	private void generateEnemybig(){
 		Enemy e = new Enemy(180, 10, 10, 250); 
@@ -102,51 +78,131 @@ public class GameEngine implements KeyListener, GameReporter{
 
 	}
 
+	private void Bonusdrop(int Y){
+		Bonus b = new Bonus(Y, 10, 10, 10); 
+		gp.sprites.add(b);
+		bonusscore.add(b);
+	}
 
-
-
+	private void Healdrop(int Y){
+		Heal h = new Heal(Y, 10, 10, 20); 
+		gp.sprites.add(h);
+		healit.add(h);
+	}
+	
 	
 	private void process(){
 		rigth();						//call
 		lift();
-		if(Math.random() < 0.04){
-			if(Math.random() < 0.3)
-				generateEnemybig();	
-			generateEnemy();				//call random
+		if(Math.random() < 0.07){
+			if(Math.random() < 0.6)
+				generateEnemy(180);	
+			else if(Math.random() < 0.3)
+				Bonusdrop(180);
+			if(Math.random() < 0.05)
+				generateEnemybig();
+			if(Math.random() < 0.05)
+				Healdrop(180);	
+								//call random
 		}
 	
-		if(Math.random() < 0.04)
-			generateEnemythree();
-		else if(Math.random() < 0.04)
-			generateEnemytwo();
+		if(Math.random() < 0.07){
+			if(Math.random() < 0.6)
+				generateEnemy(80);
+			else if(Math.random() < 0.3)
+				Bonusdrop(80);
+			if(Math.random() < 0.05)
+				Healdrop(80);	
+		}
+		else{
+			if(Math.random() < 0.06)
+				generateEnemy(280);
+			else if(Math.random() < 0.015)
+				Bonusdrop(280);
+			if(Math.random() < 0.0065)
+				Healdrop(280);	
+			
+		}
 		
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
+		Iterator<Bonus> b_iter = bonusscore.iterator();
+		Iterator<Heal> h_iter = healit.iterator();
+		
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
 			e.proceed();
 			
+
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 1; 		// add socre 
+
+			}
+		
+		}
+
+		while(b_iter.hasNext()){
+			Bonus b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+		
 			}
 		}
-		
+
+		while(h_iter.hasNext()){
+			Heal h = h_iter.next();
+			h.proceed();
+			
+			if(!h.isAlive()){
+				h_iter.remove();
+				gp.sprites.remove(h);
+			}
+		}
+
 		gp.updateGameUI(this);
 		
-		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double vr = v.getRectangle();  //v is space ship
 		Rectangle2D.Double er;
+		Rectangle2D.Double br;
+		Rectangle2D.Double hr;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				damagetime = damagetime-1;
-				if(damagetime == 0){	//number of damage
+				damagetime = damagetime - 1;
+				if(damagetime == 0){
 					die();
 					return;
 				}
 			}
 		}
+
+		for(Bonus b : bonusscore){
+			br = b.getRectangle();
+			if(br.intersects(vr)){
+				score += 1000;
+				b.alive = false;
+			}
+		}
+
+		for(Heal h : healit){
+			hr = h.getRectangle();
+			if(hr.intersects(vr)){
+				damagetime += 1;
+				h.alive = false;
+			}
+		}
+
+
+
+
+
+
+
+
 	}
 	
 	public void die(){
