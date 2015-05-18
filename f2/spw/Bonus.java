@@ -4,15 +4,27 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 public class Bonus extends Sprite{
 	public static final int Y_TO_FADE = 500;
 	public static final int Y_TO_DIE = 600;
 	
 	private int step = 10;
 	public boolean alive = true;
+	BufferedImage gold;
 	
 	public Bonus(int x, int y, int a, int b) {  // change int to varible for random
 		super(x, y, a, b);
+		try{
+			gold = ImageIO.read(new File("f2/spw/image/gold.png"));
+		}
+		catch(IOException d){
+
+		}
 		
 	}
 
@@ -24,8 +36,9 @@ public class Bonus extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.BLUE);
-		g.fillRect(x, y, width, height);
+		//g.setColor(Color.BLUE);
+		//g.fillRect(x, y, width, height);
+		g.drawImage(gold,x,y,width,height,null);
 		
 	}
 

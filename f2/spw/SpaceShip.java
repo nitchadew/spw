@@ -3,20 +3,34 @@ package f2.spw;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 public class SpaceShip extends Sprite{
 
 	int step = 100;	
 	int stepp = 200;				//ship step*****
 	
+	BufferedImage me;
+	
 	public SpaceShip(int x, int y, int width, int height) {
 		super(x, y, width, height);
+		try{
+			me = ImageIO.read(new File("f2/spw/image/me.png"));
+		}
+		catch(IOException d){
+
+		}
 		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
-		g.fillRect(x, y, width, height);
+		//g.setColor(Color.GREEN);
+		//g.fillRect(x, y, width, height);
+		g.drawImage(me,x,y,width,height,null);
 		
 	}
 
@@ -40,7 +54,9 @@ public class SpaceShip extends Sprite{
 		
 	}
 
-
+	public int getx(){
+		return x;
+	}
 
 }
 

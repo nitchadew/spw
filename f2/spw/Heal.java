@@ -4,15 +4,28 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 public class Heal extends Sprite{
 	public static final int Y_TO_FADE = 500;
 	public static final int Y_TO_DIE = 600;
 	
 	private int step = 10;
 	public boolean alive = true;
+	BufferedImage heart;
 	
 	public Heal(int x, int y, int a, int b) {  // change int to varible for random
 		super(x, y, a, b);
+		try{
+			heart = ImageIO.read(new File("f2/spw/image/heart.png"));
+		}
+		catch(IOException d){
+
+		}
+		
 		
 	}
 
@@ -24,8 +37,9 @@ public class Heal extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.WHITE);
-		g.fillRect(x, y, width, height);
+		//g.setColor(Color.WHITE);
+		//g.fillRect(x, y, width, height);
+		g.drawImage(heart,x,y,width,height,null);
 		
 	}
 
